@@ -1,0 +1,108 @@
+{
+    "movies": [
+        
+      {
+        "id": 1,
+        "title": "Parasite",
+        "genre":"Drama",
+        "ageRating": "12",
+        "duration": 132,
+        "times": ["12:00", "14:20", "16:40", "19:00", "21:20"],
+        "seating": {
+          "rows": ["A", "B", "C"],
+          "seats": ["A1","A2","A3","B1","B2","B3","C1","C2","C3"]
+        },
+        "Price" : [
+            { 
+                "2D" : {
+                        "Adult": "£12", 
+                        "Child": "£8"
+                },
+                "3D" : {
+                        "Adult": "£15", 
+                        "Child": "£10"
+                }
+            
+            }
+        ],
+        "ticketsSold": [
+          {
+            "time": "14:20",
+            "seat": "B2"
+          },
+          {
+            "time": "14:20",
+            "seat": "C1"
+          }
+        ],
+        "plot" : "The Kim family—father Ki-taek, mother Chung-sook, daughter Ki-jung and son Ki-woo—live in a small semi-basement apartment (banjiha), have low-paying temporary jobs as pizza box folders, and struggle to make ends meet. One day, Min-hyuk, a friend of Ki-woo's and a university student, gives the family a scholar's rock, which is meant to promise wealth to whoever possesses it. "
+      },
+      {
+        "id": 2,
+        "title": "The Matrix Reloaded(2003)",
+        "genre":"Sci-Fi/Action",
+        "ageRating": "12",
+        "duration": 120,
+        "times": ["9:00", "10:20", "11:40", "13:00", "14:20"],
+        "seating": {
+            "rows": ["A", "B", "C"],
+            "seats": ["A1","A2","A3","B1","B2","B3","C1","C2","C3"]
+        },
+        "ticketsSold": [
+          {
+            "time": "14:20",
+            "seat": "A1"
+          },
+          {
+            "time": "14:20",
+            "seat": "B2"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Joker",
+        "genre":"Comedy/Drama",
+        "ageRating": "12",
+        "duration": 120,
+        "times": ["9:30", "10:20", "11:40", "13:00", "14:20"],
+        "seating": {
+            "rows": ["A", "B", "C"],
+            "seats": ["A1","A2","A3","B1","B2","B3","C1","C2","C3"]
+        },
+        "ticketsSold": [
+          {
+            "time": "10:20",
+            "seat": "A1"
+          },
+          {
+            "time": "14:20",
+            "seat": "B2"
+          }
+        ],
+        "plot" : "In 1981, party clown and aspiring stand-up comedian Arthur Fleck lives with his mother, Penny, in Gotham City. Gotham is rife with crime and unemployment, leaving swathes of the population disenfranchised and impoverished. Arthur suffers from a medical disorder that causes him to laugh at inappropriate times; he depends on social services for medication. After a gang of delinquents attacks Arthur in an alley, his co-worker, Randall, gives him a gun for protection. Arthur meets his neighbor, single mother So…"
+      },
+      {
+        "id": 4,
+        "title": "Ready Or Not",
+        "genre":"Horror",
+        "ageRating": "18",
+        "duration": 120,
+        "times": ["9:30", "10:20", "11:40", "13:00", "14:20"],
+        "seating": {
+            "rows": ["A", "B", "C"],
+            "seats": ["A1","A2","A3","B1","B2","B3","C1","C2","C3"]
+        },
+        "ticketsSold": [
+          {
+            "time": "14:20",
+            "seat": "A1"
+          },
+          {
+            "time": "14:20",
+            "seat": "B2"
+          }
+        ]
+      }
+    ]
+  }
