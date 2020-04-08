@@ -8,7 +8,7 @@ let selectedItems = {
 	movie: "",
 	time: "",
     number: "",
-    seat: ""
+    seat: []
 };
 
 //======================== Main Menu Choice 1 ============================================
@@ -20,12 +20,12 @@ const displayMoviesSummary = () => {
         `--- ${movie.id}: ${movie.title}, - duration: ${movie.duration}mins`
       );
     } 
-    mainMenu()
 }
 
 const toBook = () => {
     displayMoviesSummary()
     selectMovie()
+    
 }
 
 const selectMovie = () => {
@@ -35,38 +35,36 @@ const selectMovie = () => {
 	if(choice == -1) {
 		mainMenu()
 	} else {
+        selectedItems.movie = movies[parseInt(choice) - 1].title
+        console.log(choice, typeof(choice))
 		showDetails(choice)
     }
     return choice;
 }
 
-const showDetails = (index) => {
-    const id = index - 1;
-  
+const showDetails = (id) => {
+    const index = parseInt(id);
+    
     console.log(
-        chalk.red(`---Name: ${movies[id].title}, Genre: ${movies[id].genre} ---`)
+        chalk.red(`---Name: ${movies[index - 1].title}, Genre: ${movies[index].genre} ---`)
     );
     console.log(`1. Choose showtime`)
-    console.log(`2. Select Seating`)
-    console.log(`3. Select number of tickets`)
-    console.log(`4. See plot preview`)
-    console.log(`5. Go Back to Main Menu`)
+    console.log(`2. Select number of tickets`)
+    console.log(`3. See plot preview`)
+    //console.log(`5. Go Back to Main Menu`)
     console.log("----------------");
 
     const choice = readlineSync.question("Please choose an option: ");
 
     switch (choice) {
         case '1':
-          showtime(id);
+          showtime(index);
           break;
         case '2':
-          seating(id);
+          tickets(index);
           break;
         case '3':
-          tickets(id);
-          break;
-        case '4':
-          storyPreview(id);
+          storyPreview(index);
           break;
         default:
           mainMenu();
@@ -75,8 +73,8 @@ const showDetails = (index) => {
 }
     //====================== Show Details ============//
 
-const showtime = (id) => {
-    const showtimes = movies[id].times;
+const showtime = (index) => {
+    const showtimes = movies[index - 1].times;
     let i = 1;
     console.log(chalk.blue(`--- showtime ----`));
 
@@ -85,23 +83,43 @@ const showtime = (id) => {
         i++;
     } 
     
-    const choice = readlineSync.question("Please choose an option: ");
+    const choice = parseInt(readlineSync.question("Please choose the time: "));
+    selectedItems['time'] = showtimes[choice - 1]
+    console.log(chalk.green(`You chose the time ${selectedItems.time}`))
+   
+    if(!selectedItems.number) {
+        tickets(index)
+    }
+    if(!selectedItems.seat.length) {
+        seating(index)
+    }
+    
 }
 
-const tickets = () => {
+const tickets = (index) => {
+    console.log(chalk.yellow('----- Ticketing -----'))
     console.log('.....Maximum number of tickets can be purchased: 5 ........')
-    const choice = readlineSync.question("How many tickets do you want to buy? ");
+    const choice = parseInt(readlineSync.question("How many tickets do you want to buy? "));
     if(choice <= 5 ) {
         selectedItems.number = choice
     }else {
         console.log('Tickets exceed the maximum number of allowance')
-        const choice = readlineSync.question("How many tickets do you want to buy? ");
+        const choice = parseInt(readlineSync.question("How many tickets do you want to buy? "));
     }
+    console.log(chalk.green(`You chose ${selectedItems.number} tickets to purchase.`))
+   
+    if(!selectedItems.time) {
+        showtime(index)
+    }
+    if(!selectedItems.seat.length) {
+        seating(index)
+    }
+    
 }
 
 
-const seating = (id) => {
-    const seats = movies[id].seating['seats']
+const seating = (index) => {
+    const seats = movies[index - 1].seating['seats']
     let i = 1;
     console.log(chalk.blue(`--- Available Seatings ----`));
 
@@ -109,21 +127,54 @@ const seating = (id) => {
         console.log(`${i} - ${seat}`)
         i++;
     } 
-    const choice = readlineSync.question("Please choose the seat: ");  
+   
+    console.log(`you need to choose seats for ${selectedItems.number} tickets`)
+
+    for(let i = 0; i < selectedItems.number; i++) {
+        const choice = parseInt(readlineSync.question(`Please choose the seat : `));  
+        selectedItems['seat'].push(seats[choice - 1])
+    }
+    console.log(chalk.green(`You chose seat number: ${selectedItems.seat}`))
+
+    displayBookingDetails();
+    confirmBooking();
+
 }
 
 
-const storyPreview = (id) => {
-    console.log(`Plot : ${movies[id].plot}`)
+const storyPreview = (index) => {
+    console.log(`Plot : ${movies[index - 1].plot}`)
+    showDetails(index)
+}
 
+const displayBookingDetails = () => {
+    console.log(chalk.yellow('---- Your booking details are: ----'))
+    console.log(chalk.green(`${selectedItems.movie}`))
+    console.log(chalk.green(`Seat number: ${selectedItems.seat}`))
+    console.log(chalk.green(`No. of tickets: ${selectedItems.number} `))
+    console.log(chalk.green(`For the time slot: ${selectedItems.time}`))
+}
+
+const confirmBooking = () => {
+    if (readlineSync.keyInYN('Do you want to confirm your booking?')) {
+        console.log(chalk.cyanBright('Your booking is confirmed!'))
+        rateOurService();
+
+    }
+    else {
+       
+        setTimeout(function(){
+            console.log(chalk.red('You have been redirected to Main menu!'))
+            mainMenu() }, 2000);
+    }
 }
 
 //=============== Main Menu =========================
 function mainMenu() {
   console.log("-------------------------------");
-  console.log("---- Movies Booking System----");
-  console.log("-------------------------------");
-  console.log("1. View all our movies");
+  console.log(chalk.green("---- Movies Booking System ----"));
+  console.log(chalk.blue("------- Choose an option below for what you want to do ------------"));
+  console.log("1. View all our movies list");
   console.log("2. Ticket Price");
   console.log("3. To book the ticket");
   console.log("4. Rate our service");
@@ -133,10 +184,11 @@ function mainMenu() {
 
   if (choice === "1") {
     console.log("----------------------------------");
-    console.log(chalk.yellow("-- ALL OUR MOVIES --"));
+    console.log(chalk.yellow("-- ALL OUR MOVIES LIST --"));
     console.log("----------------------------------");
     // Show all movies
     displayMoviesSummary(movies);
+    mainMenu()
 
   }else if (choice === '2') {
     chooseMovieTypes()
@@ -157,11 +209,15 @@ const chooseMovieTypes = () => {
     
     const types = ['2D', '3D']
     const choice = readlineSync.keyInSelect(types,`Pick a type of movie you want to watch ?`,{cancel: 'Go to main menu'})
+    console.log(choice, '2D')
 
-    if( choice == -1) {
-        console.log(chalk.red('Choose from option!!'))
-        const choice = readlineSync.keyInSelect(types,`Pick a type of movie you want to watch ?`,{cancel: 'Go to main menu'})
+    if(choice == 2) {
+        mainMenu()
     }
+    // else if(choice == -1) {
+    //     console.log(chalk.red('Choose from option!!'))
+    //     const choice = readlineSync.keyInSelect(types,`Pick a type of movie you want to watch ?`,{cancel: 'Go to main menu'})
+    // }
     else if(choice == 0){
         console.log("----------------------------------");
         console.log(chalk.yellow("-- Ticket Price for 2D are : --"));
@@ -170,29 +226,47 @@ const chooseMovieTypes = () => {
         console.log(`Child Price: £${movieTypes[0]['2D'].Child}`)
     }
     else if(choice == 1){
-        console.log("----------------------------------");
+        console.log("----------------------------------");3
         console.log(chalk.yellow("-- Ticket Price for 3D are : --"));
         console.log("----------------------------------");
-        console.log(`Adult Price: £${movieTypes[1]['3D']['Adult']}`)
-        console.log(`Child Price: £${movieTypes[1]['3D']['Child']}`)
+        console.log(`Adult Price: £${movieTypes[0]['3D'].Adult}`)
+        console.log(`Child Price: £${movieTypes[0]['3D'].Child}`)
     }
+    // else {
+    //     console.log(chalk.red('Choose from option!!'))
+    //     const choice = readlineSync.keyInSelect(types,`Pick a type of movie you want to watch ?`,{cancel: 'Go to main menu'})
+    // }
 }
 
 //===================== Menu Number 3 ==============================
 
 const rateOurService = () => {
-    if(!API.read('ratings')) {
-        API.create('ratings',{})
-    }
+    
     console.log("----------------------------------");
     console.log(chalk.yellow("-- Rate our service from 1 to 10 --"));
     console.log("----------------------------------");
     const rating = readlineSync.question("How do you want to rate our service? - ");
-
-    const ratings = API.read('ratings')
-    ratings.push({'rate': rating})
+    const name = readlineSync.question("Please type your name? - ");
     
-    API.update(ratings)
+    const rates = API.read('Ratings')
+    const UserRating = {rate: '', name: ''}
+    UserRating.rate = rating;
+    UserRating.name = name;
+    API.create('Ratings',UserRating)
+
+    if(!rates) {
+        API.update('Ratings', 1 )
+    } else {
+        rates.push(UserRating)
+        API.update('Ratings',rates.id - 1)
+    }
+
+    console.log(chalk.magenta('Thanks for using our service!'))
+    
+}
+
+const addToSold = () => {
+
 }
 
 mainMenu();
