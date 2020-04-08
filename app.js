@@ -51,7 +51,7 @@ const showDetails = (id) => {
     console.log(`1. Choose showtime`)
     console.log(`2. Select number of tickets`)
     console.log(`3. See plot preview`)
-    //console.log(`5. Go Back to Main Menu`)
+    console.log(`4. Go Back to Main Menu`)
     console.log("----------------");
 
     const choice = readlineSync.question("Please choose an option: ");
@@ -66,6 +66,9 @@ const showDetails = (id) => {
         case '3':
           storyPreview(index);
           break;
+        case '4':
+            mainMenu();
+            break;
         default:
           mainMenu();
           break;
@@ -83,10 +86,16 @@ const showtime = (index) => {
         i++;
     } 
     
-    const choice = parseInt(readlineSync.question("Please choose the time: "));
-    selectedItems['time'] = showtimes[choice - 1]
+    const choice = readlineSync.question("Please choose the time: ");
+    console.log(choice, typeof(choice))
+    selectedItems['time'] = showtimes[parseInt(choice) - 1]
     console.log(chalk.green(`You chose the time ${selectedItems.time}`))
-   
+    
+    if(!choice || choice === -1 || parseInt(choice) > 5){
+        console.log(chalk.red('Choose from the options!'))
+        const choice = parseInt(readlineSync.question("Please choose the time: "));
+    }
+
     if(!selectedItems.number) {
         tickets(index)
     }
@@ -99,12 +108,13 @@ const showtime = (index) => {
 const tickets = (index) => {
     console.log(chalk.yellow('----- Ticketing -----'))
     console.log('.....Maximum number of tickets can be purchased: 5 ........')
-    const choice = parseInt(readlineSync.question("How many tickets do you want to buy? "));
-    if(choice <= 5 ) {
+    const choice = readlineSync.question("How many tickets do you want to buy? ");
+    if(parseInt(choice) <= 5 ) {
         selectedItems.number = choice
-    }else {
+    }
+    else {
         console.log('Tickets exceed the maximum number of allowance')
-        const choice = parseInt(readlineSync.question("How many tickets do you want to buy? "));
+        const choice = readlineSync.question("How many tickets do you want to buy? ");
     }
     console.log(chalk.green(`You chose ${selectedItems.number} tickets to purchase.`))
    
@@ -132,12 +142,16 @@ const seating = (index) => {
 
     for(let i = 0; i < selectedItems.number; i++) {
         const choice = parseInt(readlineSync.question(`Please choose the seat : `));  
+        if(choice == -1 || choice) {
+            console.log(chalk.red('Choose from the options!'))
+            const choice = parseInt(readlineSync.question("Please choose seat: "));
+        }
         selectedItems['seat'].push(seats[choice - 1])
     }
     console.log(chalk.green(`You chose seat number: ${selectedItems.seat}`))
 
     displayBookingDetails();
-    confirmBooking();
+    confirmBooking(index);
 
 }
 
@@ -155,10 +169,11 @@ const displayBookingDetails = () => {
     console.log(chalk.green(`For the time slot: ${selectedItems.time}`))
 }
 
-const confirmBooking = () => {
+const confirmBooking = (index) => {
     if (readlineSync.keyInYN('Do you want to confirm your booking?')) {
         console.log(chalk.cyanBright('Your booking is confirmed!'))
         rateOurService();
+        addToSold(index);
 
     }
     else {
@@ -191,7 +206,7 @@ function mainMenu() {
     mainMenu()
 
   }else if (choice === '2') {
-    chooseMovieTypes()
+    checkTicketPrice()
     mainMenu();
 
   }else if (choice == '3') {
@@ -204,13 +219,12 @@ function mainMenu() {
 }
 
 //===================== Menu Number 2 ==============================
-const chooseMovieTypes = () => {
+const checkTicketPrice = () => {
     const movieTypes = movies[0]['Price']
     
     const types = ['2D', '3D']
     const choice = readlineSync.keyInSelect(types,`Pick a type of movie you want to watch ?`,{cancel: 'Go to main menu'})
-    console.log(choice, '2D')
-
+    
     if(choice == 2) {
         mainMenu()
     }
@@ -265,8 +279,29 @@ const rateOurService = () => {
     
 }
 
-const addToSold = () => {
+movies['ticketsSold'] = []
+const addToSold = (index) => {
+    const movie = API.read("movies", index);
+    movie['ticketsSold'].push(selectedItems)
+    API.update("movies", movie);
 
+    removeSeatAfterSold(index)
+}
+
+const removeSeatAfterSold = (index) => {
+    const movie = API.read("movies", index);
+
+    selectedItems.seat.forEach(Occupiedseat => {
+        const availableSeats = movie['seating']['seats']
+        if(availableSeats.includes(Occupiedseat)){
+            console.log(availableSeats.indexOf(Occupiedseat))
+            const idex = availableSeats.indexOf(Occupiedseat)
+            if (idex > -1) {
+                availableSeats.splice(idex, 1);
+              }
+        }
+    }) 
+    API.update('movies',movie)
 }
 
 mainMenu();

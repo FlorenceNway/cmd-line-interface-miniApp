@@ -8,7 +8,7 @@
         "times": ["12:00", "14:20", "16:40", "19:00", "21:20"],
         "seating": {
             "rows": ["A", "B", "C"],
-            "seats": ["A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"]
+            "seats": ["A1", "A2", "B2", "B3", "C1", "C2", "C3"]
         },
         "Price": [{
             "2D": {
@@ -20,13 +20,7 @@
                 "Child": 10
             }
         }],
-        "ticketsSold": [{
-            "time": "14:20",
-            "seat": "B2"
-        }, {
-            "time": "14:20",
-            "seat": "C1"
-        }],
+        "ticketsSold": [],
         "plot": "The Kim family—father Ki-taek, mother Chung-sook, daughter Ki-jung and son Ki-woo—live in a small semi-basement apartment (banjiha), have low-paying temporary jobs as pizza box folders, and struggle to make ends meet. One day, Min-hyuk, a friend of Ki-woo's and a university student, gives the family a scholar's rock, which is meant to promise wealth to whoever possesses it. "
     }, {
         "id": 2,
@@ -39,13 +33,8 @@
             "rows": ["A", "B", "C"],
             "seats": ["A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"]
         },
-        "ticketsSold": [{
-            "time": "14:20",
-            "seat": "A1"
-        }, {
-            "time": "14:20",
-            "seat": "B2"
-        }]
+        "ticketsSold": [],
+        "plot": "Neo, Morpheus, Trinity, and the rest of their crew continue to battle the machines that have enslaved the human race in the Matrix. Now, more humans are waking up out of the matrix and attempting to live in the real world. As their numbers grow, the battle moves to Zion, the last real-world city and center of human resistance."
     }, {
         "id": 3,
         "title": "Joker",
@@ -57,13 +46,7 @@
             "rows": ["A", "B", "C"],
             "seats": ["A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"]
         },
-        "ticketsSold": [{
-            "time": "10:20",
-            "seat": "A1"
-        }, {
-            "time": "14:20",
-            "seat": "B2"
-        }],
+        "ticketsSold": [],
         "plot": "In 1981, party clown and aspiring stand-up comedian Arthur Fleck lives with his mother, Penny, in Gotham City. Gotham is rife with crime and unemployment, leaving swathes of the population disenfranchised and impoverished. Arthur suffers from a medical disorder that causes him to laugh at inappropriate times; he depends on social services for medication. After a gang of delinquents attacks Arthur in an alley, his co-worker, Randall, gives him a gun for protection. Arthur meets his neighbor, single mother So…"
     }, {
         "id": 4,
@@ -76,6 +59,7 @@
             "rows": ["A", "B", "C"],
             "seats": ["A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"]
         },
-        "ticketsSold": []
+        "ticketsSold": [],
+        "plot": "Before long, as part of a macabre long-standing family tradition, Grace will have to play a seemingly innocent game, and hide somewhere in the vast mansion's cavernous halls and labyrinthine corridors, until dawn. Now, whether Grace is ready or not, the armed-to-the-teeth Domases are coming for her, and it's going to get ugly."
     }]
 }
