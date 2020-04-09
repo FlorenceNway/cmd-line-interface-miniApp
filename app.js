@@ -28,16 +28,18 @@ const toBook = () => {
 
 const selectMovie = () => {
   console.log("----------------");
-  const choice = readlineSync.question(
+  let choice = readlineSync.question(
     "What movie whould you like to watch? - "
   );
 
-  if (choice == -1) {
-        mainMenu();
-  } else {
+  while(!choice || parseInt(choice)!= choice || parseInt(choice) > 4){
+    choice = readlineSync.question(
+        "What movie whould you like to watch? - "
+    );
+  } 
         selectedItems.movie = movies[parseInt(choice) - 1].title;
         showDetails(choice);
-  }
+  
 
   return choice;
 };
@@ -48,7 +50,7 @@ const showDetails = (id) => {
 
   console.log(
     chalk.red(
-      `---Name: ${movies[index - 1].title}, Genre: ${movies[index].genre} ---`
+      `---Name: ${movies[index - 1].title}, Genre: ${movies[index-1].genre} ---`
     )
   );
   console.log(`1. Choose showtime`);
@@ -90,14 +92,14 @@ const showtime = (index) => {
     i++;
   }
 
-  const choice = readlineSync.question("Please choose the time: ");
+  let timeSlot = readlineSync.question("Please choose the time: ");
 
-  selectedItems["time"] = showtimes[parseInt(choice) - 1];
+  selectedItems["time"] = showtimes[parseInt(timeSlot) - 1];
   console.log(chalk.green(`You chose the time ${selectedItems.time}`));
 
-  if (!choice || parseInt(choice)!= choice || parseInt(choice) > 5) {
+  while (!timeSlot || parseInt(timeSlot)!= timeSlot || parseInt(timeSlot) > 5) {
     console.log(chalk.red("Choose from the options!"));
-    const choice = parseInt(readlineSync.question("Please choose the time: "));
+     timeSlot = readlineSync.question("Please choose the time: ");
   }
 
   if (!selectedItems.number) {
@@ -110,18 +112,19 @@ const showtime = (index) => {
 
 const tickets = (index) => {
   console.log(chalk.yellow("----- Ticketing -----"));
-  console.log(".....Maximum number of tickets can be purchased: 5 ........");
-  const choice = readlineSync.question("How many tickets do you want to buy? ");
-  if (parseInt(choice) <= 5 || parseInt(choice)!= choice) {
-    selectedItems.number = choice;
-  } else {
-    console.log("Tickets exceed the maximum number of allowance");
-    const choice = readlineSync.question(
+  console.log(chalk.blue(".....Maximum number of tickets can be purchased: 5 ........"));
+  let choice = readlineSync.question("How many tickets do you want to buy? ");
+
+  while(parseInt(choice) > 5 || parseInt(choice)!= choice){
+    console.log(chalk.red("You entered invalid or exceed the maximum number of allowance"));
+    choice = readlineSync.question(
       "How many tickets do you want to buy? "
     );
   }
+    selectedItems.number = choice;
+  
   console.log(
-    chalk.green(`You chose ${selectedItems.number} tickets to purchase.`)
+    chalk.green(`You chose ${selectedItems.number} ticket(s) to purchase.`)
   );
 
   if (!selectedItems.time) {
@@ -145,10 +148,10 @@ const seating = (index) => {
   console.log(`you need to choose seats for ${selectedItems.number} tickets`);
 
   for (let i = 0; i < selectedItems.number; i++) {
-  const choice = parseInt(readlineSync.question(`Please choose the seat : `));
-    if (choice == -1 || choice) {
+  let choice = parseInt(readlineSync.question(`Please choose the seat : `));
+    while (choice == -1 || !choice) {
       console.log(chalk.red("Choose from the options!"));
-      const choice = parseInt(readlineSync.question("Please choose seat: "));
+      choice = parseInt(readlineSync.question("Please choose seat: "));
     }
     selectedItems["seat"].push(seats[choice - 1]);
   }
