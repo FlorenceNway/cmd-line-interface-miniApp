@@ -1,6 +1,17 @@
 # Javascript Command Line Interface project
 
 This is a simple command line interface (CLI), written in Javascript, which persists data using a JSON file.
+It is simple movie booking system.
+User can 
+- view the movies from the database.
+- check the ticket prices.
+- book the ticket
+    - user can choose the showtime
+    - select the number of tickets to purchase
+    - select the seat
+
+Upon sucessful booking (after saving in the database), user can have a confirmation message.
+
 
 ## Run the demo
 
