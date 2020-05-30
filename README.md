@@ -1,7 +1,7 @@
 # Javascript Command Line Interface 
 
 This is a simple command line interface (CLI), written in Javascript, which persists data using a JSON file.
-It is simple movie booking system.
+It is a simple movie booking system.
 User can 
 - view the movies from the database.
 - check the ticket prices.
